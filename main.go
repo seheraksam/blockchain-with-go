@@ -25,6 +25,7 @@ func main() {
 		models.Blockchain = append(models.Blockchain, genesisBlock)
 	}()
 	r := gin.Default()
+	r.GET("/gethandle", handlers.HandleGetBlockchain)
 	r.POST("/signUp", handlers.HandleWriteBlock)
 	r.Run()
 

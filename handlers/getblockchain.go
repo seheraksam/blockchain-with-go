@@ -8,7 +8,7 @@ import (
 	"github.com/seheraksam/blockchain-with-go/models"
 )
 
-func handleGetBlockchain(c *gin.Context) {
+func HandleGetBlockchain(c *gin.Context) {
 	bytes, err := json.MarshalIndent(models.Blockchain, "", "  ")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, http.StatusInternalServerError)
