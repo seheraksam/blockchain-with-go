@@ -2,12 +2,13 @@ package main
 
 import (
 	"log"
-	"net/http"
-	"os"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
+	"github.com/seheraksam/blockchain-with-go/handlers"
 	"github.com/seheraksam/blockchain-with-go/initializers"
+	"github.com/seheraksam/blockchain-with-go/models"
 )
 
 func init() {
@@ -17,23 +18,14 @@ func init() {
 }
 
 func main() {
-
-}
-func run() error {
+	go func() {
+		t := time.Now()
+		genesisBlock := models.Block{0, t.String(), 0, "", ""}
+		spew.Dump(genesisBlock)
+		models.Blockchain = append(models.Blockchain, genesisBlock)
+	}()
 	r := gin.Default()
-	httpAddr := os.Getenv("PORT")
-	log.Println("Listening on ", os.Getenv("ADDR"))
-	s := &http.Server{
-		Addr:           ":" + httpAddr,
-		Handler:        r,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
+	r.POST("/signUp", handlers.HandleWriteBlock)
+	r.Run()
 
-	if err := s.ListenAndServe(); err != nil {
-		return err
-	}
-
-	return nil
 }

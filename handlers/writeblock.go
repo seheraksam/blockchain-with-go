@@ -10,15 +10,15 @@ import (
 	"github.com/seheraksam/blockchain-with-go/utils"
 )
 
-func handleWriteBlock(c *gin.Context) {
+func HandleWriteBlock(c *gin.Context) {
 	var m models.Message
 
 	decoder := json.NewDecoder(c.Request.Body)
 	if err := decoder.Decode(&m); err != nil {
-		c.JSON(http.StatusBadRequest, c.Body)
+		c.JSON(http.StatusBadRequest, decoder)
 		return
 	}
-	defer c.Body.Close()
+	defer c.Request.Body.Close()
 
 	newBlock, err := utils.GenerateBlock(models.Blockchain[len(models.Blockchain)-1], m.BPM)
 	if err != nil {
